@@ -47,9 +47,9 @@ def ellipsoid(cx, cy, cz, rx, ry, rz, lons=8, lats=5, color="amber"):
         for j in range(lons):
             th = 2 * math.pi * j / lons
             ring.append(len(verts))
-            verts.append((cx + rx * math.cos(phi),
-                          cy + ry * math.sin(phi) * math.cos(th),
-                          cz + rz * math.sin(phi) * math.sin(th)))
+            verts.append((cx + rx * math.sin(phi),
+                          cy + ry * math.cos(phi) * math.cos(th),
+                          cz + rz * math.cos(phi) * math.sin(th)))
         if i > 1:
             for j in range(lons):
                 a = ring[j]; b = ring[(j + 1) % lons]
@@ -216,10 +216,28 @@ def emit_part_dl(name, meshes, f):
         colors += [col for *_, col in m["tris"]]
     norms = _normals(verts, tris)
 
-    groups = [range(i, min(i + 15, len(verts))) for i in range(0, len(verts), 15)]
-    for gi, g in enumerate(groups):
+    # F3DZEX can address at most 15 vertices per gsSPVertex batch.  Partition
+    # triangles greedily, remapping each batch to a local vertex table instead
+    # of dropping triangles that cross global 15-vertex boundaries.
+    records = [(a, b, c, col) for (a, b, c), col in zip(tris, colors)]
+    batches = []
+    batch = []
+    batch_vertices = set()
+    for record in records:
+        used = set(record[:3])
+        if batch and len(batch_vertices | used) > 15:
+            batches.append((batch, batch_vertices))
+            batch = []
+            batch_vertices = set()
+        batch.append(record)
+        batch_vertices |= used
+    if batch:
+        batches.append((batch, batch_vertices))
+
+    for gi, (batch, batch_vertices) in enumerate(batches):
+        local_vertices = {global_i: local_i for local_i, global_i in enumerate(batch_vertices)}
         f.write(f"static const Vtx otto_{name}_dl_vertex_group{gi+1}[] = {{\n")
-        for i in g:
+        for i in batch_vertices:
             x, y, z = (int(round(v)) for v in verts[i])
             nx, ny, nz = (v & 0xFF for v in norms[i])
             f.write("    {{{%6d,%6d,%6d}, 0, {     0,      0}, {0x%02x, 0x%02x, 0x%02x, 0x00}}},\n"
@@ -228,11 +246,11 @@ def emit_part_dl(name, meshes, f):
 
     f.write(f"const Gfx otto_{name}_dl[] = {{\n")
     cur_color = None
-    for gi, g in enumerate(groups):
-        lo, hi = g.start, g.stop
-        f.write(f"    gsSPVertex(otto_{name}_dl_vertex_group{gi+1}, {hi - lo}, 0),\n")
-        gtris = [(a - lo, b - lo, c - lo, col) for (a, b, c), col in zip(tris, colors)
-                 if lo <= a < hi and lo <= b < hi and lo <= c < hi]
+    for gi, (batch, batch_vertices) in enumerate(batches):
+        local_vertices = {global_i: local_i for local_i, global_i in enumerate(batch_vertices)}
+        f.write(f"    gsSPVertex(otto_{name}_dl_vertex_group{gi+1}, {len(batch_vertices)}, 0),\n")
+        gtris = [(local_vertices[a], local_vertices[b], local_vertices[c], col)
+                 for a, b, c, col in batch]
         i = 0
         while i < len(gtris):
             col = gtris[i][3]
@@ -296,6 +314,8 @@ def emit_model_inc(parts):
 
 def _head_geo(layer):
     """Geo for the face+eyes+wings branch, parameterised by render layer."""
+    wing_layer = "LAYER_TRANSPARENT" if layer == "LAYER_TRANSPARENT" else "LAYER_ALPHA"
+    wing_dl = "mario_cap_wings_transparent" if layer == "LAYER_TRANSPARENT" else "mario_cap_wings"
     def dl(state):
         return f"            GEO_DISPLAY_LIST({layer}, otto_head_eyes_{state}),"
     eyes = "\n".join([dl("front"), dl("half_closed"), dl("closed"),
@@ -320,7 +340,7 @@ def _head_geo(layer):
          GEO_ASM(0, geo_mario_rotate_wing_cap_wings),
          GEO_ROTATION_NODE(0x00, 0, 0, 0),
          GEO_OPEN_NODE(),
-            GEO_DISPLAY_LIST(LAYER_ALPHA, mario_cap_wings),
+            GEO_DISPLAY_LIST({wing_layer}, {wing_dl}),
          GEO_CLOSE_NODE(),
       GEO_CLOSE_NODE(),
       GEO_TRANSLATE_ROTATE(0, 142, -51, 126, -22, 40, -135),
@@ -328,7 +348,7 @@ def _head_geo(layer):
          GEO_ASM(1, geo_mario_rotate_wing_cap_wings),
          GEO_ROTATION_NODE(0x00, 0, 0, 0),
          GEO_OPEN_NODE(),
-            GEO_DISPLAY_LIST(LAYER_ALPHA, mario_cap_wings),
+            GEO_DISPLAY_LIST({wing_layer}, {wing_dl}),
          GEO_CLOSE_NODE(),
       GEO_CLOSE_NODE(),
    GEO_CLOSE_NODE(),
@@ -345,8 +365,8 @@ def _hand_geo(side, layer):
     if side == "right":
         held1 = "         GEO_HELD_OBJECT(0x00, 0, 0, 0, geo_switch_mario_hand_grab_pos),\n"
         extra = f"""      GEO_ANIMATED_PART({L}, 60, 0, 0, otto_right_hand_closed),
-      GEO_ANIMATED_PART({L}, 60, 0, 0, otto_right_hand_closed),
-      GEO_ANIMATED_PART({L}, 60, 0, 0, otto_right_hand_closed),
+      GEO_ANIMATED_PART({L}, 60, 0, 0, mario_right_hand_cap),
+      GEO_ANIMATED_PART({L}, 60, 0, 0, mario_right_hand_cap),
       GEO_OPEN_NODE(),
          GEO_DISPLAY_LIST(LAYER_ALPHA, mario_right_hand_cap_wings),
       GEO_CLOSE_NODE(),
