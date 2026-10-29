@@ -191,16 +191,16 @@
  * File Select Text
  */
 // Main Screens
-#define TEXT_MARIO _("MARIO") // View Score Menu
+#define TEXT_MARIO _("OTTO") // View Score Menu
 #define TEXT_SELECT_FILE _("SELECT FILE")
 #define TEXT_CHECK_FILE _("CHECK FILE")
 #define TEXT_COPY_FILE _("COPY FILE")
 #define TEXT_ERASE_FILE _("ERASE FILE")
 #define TEXT_SOUND_SELECT _("SOUND SELECT")
-#define TEXT_FILE_MARIO_A _("MARIO A")
-#define TEXT_FILE_MARIO_B _("MARIO B")
-#define TEXT_FILE_MARIO_C _("MARIO C")
-#define TEXT_FILE_MARIO_D _("MARIO D")
+#define TEXT_FILE_MARIO_A _("OTTO A")
+#define TEXT_FILE_MARIO_B _("OTTO B")
+#define TEXT_FILE_MARIO_C _("OTTO C")
+#define TEXT_FILE_MARIO_D _("OTTO D")
 
 // Menu Options
 #define TEXT_SCORE _("SCORE")
@@ -225,7 +225,7 @@
 // Score Menu
 #define TEXT_HI_SCORE _("HI SCORE")
 #define TEXT_MY_SCORE _("MY SCORE")
-// Score Mario Text ("☺" is the Mario face defined in the US/EU menu char table)
+// Score Otto Text ("☺" is the Otto face defined in the US/EU menu char table)
 #define TEXT_SCORE_MARIO_A _("☺A")
 #define TEXT_SCORE_MARIO_B _("☺B")
 #define TEXT_SCORE_MARIO_C _("☺C")
@@ -240,7 +240,7 @@
 #define TEXT_SURE _("SURE?")
 #define TEXT_YES _("YES")
 #define TEXT_NO _("NO")
-#define TEXT_FILE_MARIO_A_JUST_ERASED _("MARIO A JUST ERASED")
+#define TEXT_FILE_MARIO_A_JUST_ERASED _("OTTO A JUST ERASED")
 
 /**
  * Menus Text (Pause, Course Completed)
@@ -255,7 +255,7 @@
 #endif
 
 // Camera Options
-#define TEXT_LAKITU_MARIO _("LAKITU + MARIO")
+#define TEXT_LAKITU_MARIO _("LAKITU + OTTO")
 #define TEXT_LAKITU_STOP _("LAKITU + STOP")
 #define TEXT_NORMAL_UPCLOSE __("(NORMAL)(UP-CLOSE)")
 #define TEXT_NORMAL_FIXED __("(NORMAL)(FIXED)")
@@ -273,15 +273,15 @@
 /**
  * Ending Peach cutscene text.
  */
-#define TEXT_FILE_MARIO_EXCLAMATION _("Mario!")
+#define TEXT_FILE_MARIO_EXCLAMATION _("Otto!")
 #define TEXT_POWER_STARS_RESTORED __("The power of the Stars is restored to the castle...")
 #define TEXT_THANKS_TO_YOU __("...and it's all thanks to you!")
-#define TEXT_THANK_YOU_MARIO __("Thank you, Mario!")
+#define TEXT_THANK_YOU_MARIO __("Thank you, Otto!")
 #define TEXT_SOMETHING_SPECIAL __("We have to do something special for you...")
 #define TEXT_LISTEN_EVERYBODY _("Listen, everybody,")
 #define TEXT_LETS_HAVE_CAKE _("let's bake a delicious cake...")
-#define TEXT_FOR_MARIO _("...for Mario...")
-#define TEXT_FILE_MARIO_QUESTION _("Mario!")
+#define TEXT_FOR_MARIO _("...for Otto...")
+#define TEXT_FILE_MARIO_QUESTION _("Otto!")
 
 #endif
 
@@ -474,7 +474,7 @@
 #define TEXT_MENU_COTMC _("   CAVERN OF THE METAL CAP")
 #define TEXT_MENU_TOTWC _("   TOWER OF THE WING CAP")
 #define TEXT_MENU_VCUTM _("   VANISH CAP UNDER THE MOAT")
-#define TEXT_MENU_WMOTR _("   WING MARIO OVER THE RAINBOW")
+#define TEXT_MENU_WMOTR _("   WING OTTO OVER THE RAINBOW")
 #define TEXT_MENU_SA _("   THE SECRET AQUARIUM")
 #define TEXT_MENU_NONE _("")
 #define TEXT_MENU_STARS _("   CASTLE SECRET STARS")

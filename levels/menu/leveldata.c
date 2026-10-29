@@ -24,12 +24,12 @@ ALIGNED8 static const Texture texture_menu_dark_stone[] = {
 
 // 0x07001018 - 0x07002018
 ALIGNED8 static const Texture texture_menu_mario_save[] = {
-#include "levels/menu/main_menu_seg7.01018.rgba16.inc.c"
+#include "levels/menu/otto_save_button.rgba16.inc.c"
 };
 
 // 0x07002018 - 0x07003018
 ALIGNED8 static const Texture texture_menu_mario_new[] = {
-#include "levels/menu/main_menu_seg7.02018.rgba16.inc.c"
+#include "levels/menu/otto_new_button.rgba16.inc.c"
 };
 
 // 0x07003018 - 0x07003118
@@ -1503,12 +1503,12 @@ ALIGNED8 static const Texture texture_menu_font_char_question[] = {
 
 // 0x0700B740
 ALIGNED8 static const Texture texture_menu_font_char_mface1[] = {
-#include "levels/menu/main_menu_seg7_us.0B740.ia8.inc.c"
+#include "levels/menu/otto_menu_face1.ia8.inc.c"
 };
 
 // 0x0700B780
 ALIGNED8 static const Texture texture_menu_font_char_mface2[] = {
-#include "levels/menu/main_menu_seg7_us.0B780.ia8.inc.c"
+#include "levels/menu/otto_menu_face2.ia8.inc.c"
 };
 
 // 0x0700B7C0

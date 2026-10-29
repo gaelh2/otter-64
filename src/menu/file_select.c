@@ -1609,8 +1609,13 @@ void print_erase_menu_prompt(s16 x, s16 y) {
 // 0 1 2 3 4 5 6 --- 0 1 2 3
 #define ERASE_FILE_X      98
 #define NOSAVE_DATA_X3   100
+#ifdef VERSION_US
+#define MARIO_ERASED_VAR   5
+#define MARIO_ERASED_X   get_str_x_pos_from_center(160, LANGUAGE_ARRAY(textMarioAJustErased), 10.0f)
+#else
 #define MARIO_ERASED_VAR   6
 #define MARIO_ERASED_X   100
+#endif
 #define SAVE_EXISTS_X2   100
 
 /**
